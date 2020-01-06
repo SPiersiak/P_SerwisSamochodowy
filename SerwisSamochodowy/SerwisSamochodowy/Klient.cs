@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.IO;
 
 namespace SerwisSamochodowy
 {
     class Klient
     {
-        public string  Imie { get; private set; }
+        public string Imie { get; private set; }
         public string Nazwisko { get; private set; }
-        string Nip { get; set ; }
+        string Nip { get; set; }
         string Telefon { get; set; }
-        string Adres {get; set;}
+        string Adres { get; set; }
         string KodPocztowy { get; set; }
 
         public Klient()
@@ -28,7 +30,7 @@ namespace SerwisSamochodowy
             string nip = (Nip == null) ? nip = message : nip = this.Nip; ;
             string telefon = (Telefon == null) ? telefon = message : telefon = this.Telefon; ;
             string adres = (Adres == null) ? adres = message : adres = this.Adres; ;
-            string kodPocztowy = (KodPocztowy == null) ? kodPocztowy = message : kodPocztowy = this.KodPocztowy; 
+            string kodPocztowy = (KodPocztowy == null) ? kodPocztowy = message : kodPocztowy = this.KodPocztowy;
 
             //nie wiem która wersja poprawna
             //if (Nip.Length <= 1)

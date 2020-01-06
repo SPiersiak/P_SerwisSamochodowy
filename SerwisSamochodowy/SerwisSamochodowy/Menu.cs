@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SerwisSamochodowy
 {
     static class Menu
-    {       
+    {
         static string[] pozycjaMenu = {"Wyświetlenie danych klienta",
                                         "Historia napraw",
                                         "Status bierzacych napraw",
@@ -14,7 +16,7 @@ namespace SerwisSamochodowy
                                         "Wyloguj"};
         static int aktywnaPozycjaMenu = 0;
         public static void StartMenu(Klient a)
-        {            
+        {
             Console.Title = "Witaj " + a.Imie + " " + a.Nazwisko;
             Console.CursorVisible = false;
             while (true)
@@ -32,7 +34,7 @@ namespace SerwisSamochodowy
             Console.WriteLine("Po menu poruszaj sie strałkami, jeżeli chcesz wybrac" +
                 "zaznaczoną opcje kliknij enter, jeżeli chcesz opuscic wybrana kategorie klknij Esc");
             Console.WriteLine();
-            for (int i = 0; i< pozycjaMenu.Length; i++)
+            for (int i = 0; i < pozycjaMenu.Length; i++)
             {
                 if (i == aktywnaPozycjaMenu)
                 {
@@ -76,15 +78,15 @@ namespace SerwisSamochodowy
         {
             switch (aktywnaPozycjaMenu)
             {
-                case 0: 
+                case 0:
                     Console.Clear(); a.WypiszDane(); break;
-                case 1: 
+                case 1:
                     Console.Clear(); opcjaWBudowie(); break;
-                case 2: 
+                case 2:
                     Console.Clear(); opcjaWBudowie(); break;
-                case 3: 
+                case 3:
                     Console.Clear(); opcjaWBudowie(); break;
-                case 4: 
+                case 4:
                     Console.Clear();
                     Console.WriteLine("Wpisz 1 jezeli chcesz ręcznie zaktualizowac dane " +
                         "\n2 jeżeli chces zimportowac dane z pliku txt.");
@@ -104,7 +106,7 @@ namespace SerwisSamochodowy
                         a.ImportAktualizacjaDanych(sciezka);
                     }
                     break;
-                case 5: 
+                case 5:
                     Environment.Exit(0); break;
             }
         }

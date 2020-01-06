@@ -15,7 +15,7 @@ namespace SerwisSamochodowy
                                         "Zaktualizuj swoje dane",
                                         "Wyloguj"};
         static int aktywnaPozycjaMenu = 0;
-        public static void StartMenu(Klient a)
+        public static void StartMenu(Logged a)
         {
             Console.Title = "Witaj " + a.Imie + " " + a.Nazwisko;
             Console.CursorVisible = false;
@@ -74,14 +74,14 @@ namespace SerwisSamochodowy
                     break;
             } while (true);
         }
-        static void UruchomOpcje(Klient a)
+        static void UruchomOpcje(Logged a)
         {
             switch (aktywnaPozycjaMenu)
             {
                 case 0:
                     Console.Clear(); a.WypiszDane(); break;
                 case 1:
-                    Console.Clear(); opcjaWBudowie(); break;
+                    Console.Clear(); HistoriaNapraw(a.id); break;
                 case 2:
                     Console.Clear(); opcjaWBudowie(); break;
                 case 3:
@@ -92,7 +92,7 @@ namespace SerwisSamochodowy
                         "\n2 jeżeli chces zimportowac dane z pliku txt.");
                     int wybor = Convert.ToInt32(Console.ReadLine());
                     if (wybor == 1)
-                        a.RecznaAktualizacjaDanych();
+                        a.RecznaAktualizacjaDanych(a.id);
                     else
                     {
                         Console.WriteLine("Dane maja byc wpisane linie po lini w takiej samej kolejnoscie jak ponizej:" +
@@ -114,6 +114,30 @@ namespace SerwisSamochodowy
         {
             Console.SetCursorPosition(12, 4);
             Console.Write("Opcja w budowie");
+            Console.ReadKey();
+        }
+
+        static void HistoriaNapraw(int id)
+        {
+            //przeszukuje baze i zwraca naprawy
+            try
+            {
+                SerwisDBEntities3 db = new SerwisDBEntities3();
+                var lista = db.Naprawy.Where(a => a.Samochody.KlientID == id);
+                foreach(var x in lista)
+                {
+                    Console.WriteLine($"Id Naprawy: {x.NaprawaID}, Id Samochodu: {x.SamochodID},Id Pracownika: {x.PracownikID}\n," +
+                        $" Robocizna: {x.Robocizna}, Gwarancja Do: {x.GwarancjaDo},\n Opis: {x.OpisUwagi}");
+                }
+                
+            }
+            catch (SystemException e)
+            {
+                Console.WriteLine("Dla tego użytkownika nie było wykonanych żadnych napraw");
+                
+            }
+
+            //Żeby się odrazu nie wylączało
             Console.ReadKey();
         }
     }

@@ -12,27 +12,28 @@ namespace SerwisSamochodowy
     using System;
     using System.Collections.Generic;
     
-    public partial class Klient
+    public partial class Naprawy
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Klient()
+        public Naprawy()
         {
+            this.Czesci = new HashSet<Czesci>();
             this.Faktury = new HashSet<Faktury>();
-            this.Samochody = new HashSet<Samochody>();
         }
     
-        public int KlientID { get; set; }
-        public string Imie { get; set; }
-        public string Nazwisko { get; set; }
-        public string Nip { get; set; }
-        public string Telefon { get; set; }
-        public string Adres { get; set; }
-        public string KodPocztowy { get; set; }
+        public int NaprawaID { get; set; }
+        public int SamochodID { get; set; }
+        public int PracownikID { get; set; }
+        public Nullable<decimal> Robocizna { get; set; }
+        public Nullable<System.DateTime> GwarancjaDo { get; set; }
+        public string OpisUwagi { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Faktury> Faktury { get; set; }
-        public virtual LogData LogData { get; set; }
+        public virtual ICollection<Czesci> Czesci { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Samochody> Samochody { get; set; }
+        public virtual ICollection<Faktury> Faktury { get; set; }
+        public virtual Kadra Kadra { get; set; }
+        public virtual Samochody Samochody { get; set; }
+        public virtual CzasNaprawy CzasNaprawy { get; set; }
     }
 }

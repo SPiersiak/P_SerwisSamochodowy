@@ -12,27 +12,23 @@ namespace SerwisSamochodowy
     using System;
     using System.Collections.Generic;
     
-    public partial class Klient
+    public partial class Samochody
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Klient()
+        public Samochody()
         {
-            this.Faktury = new HashSet<Faktury>();
-            this.Samochody = new HashSet<Samochody>();
+            this.Naprawy = new HashSet<Naprawy>();
         }
     
+        public int SamochodID { get; set; }
         public int KlientID { get; set; }
-        public string Imie { get; set; }
-        public string Nazwisko { get; set; }
-        public string Nip { get; set; }
-        public string Telefon { get; set; }
-        public string Adres { get; set; }
-        public string KodPocztowy { get; set; }
+        public string Marka { get; set; }
+        public string Model { get; set; }
+        public string VIN { get; set; }
+        public Nullable<System.DateTime> RokProdukcji { get; set; }
     
+        public virtual Klient Klient { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Faktury> Faktury { get; set; }
-        public virtual LogData LogData { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Samochody> Samochody { get; set; }
+        public virtual ICollection<Naprawy> Naprawy { get; set; }
     }
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f7546ef115354567a65f6993b11e541b" Name="Diagram1">
+        <EntityTypeShape EntityType="SerwisDBModel.Czesci" Width="1.5" PointX="7.5" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SerwisDBModel.Faktury" Width="1.5" PointX="3" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SerwisDBModel.Kadra" Width="1.5" PointX="3" PointY="13" IsExpanded="true" />
+        <EntityTypeShape EntityType="SerwisDBModel.Klient" Width="1.5" PointX="0.75" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SerwisDBModel.Naprawy" Width="1.5" PointX="5.25" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SerwisDBModel.Samochody" Width="1.5" PointX="3" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SerwisDBModel.CzasNaprawy" Width="1.5" PointX="7.5" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SerwisDBModel.LogData" Width="1.5" PointX="3" PointY="10" IsExpanded="true" />
+        <AssociationConnector Association="SerwisDBModel.FK_Czesci_ToTable" ManuallyRouted="false" />
+        <AssociationConnector Association="SerwisDBModel.FK_Faktury_ToTable" ManuallyRouted="false" />
+        <AssociationConnector Association="SerwisDBModel.FK_Faktury_ToTable_1" ManuallyRouted="false" />
+        <AssociationConnector Association="SerwisDBModel.FK_Naprawy_ToTable_1" ManuallyRouted="false" />
+        <AssociationConnector Association="SerwisDBModel.FK_LogData_ToTable" ManuallyRouted="false" />
+        <AssociationConnector Association="SerwisDBModel.FK_Samochody_ToTable" ManuallyRouted="false" />
+        <AssociationConnector Association="SerwisDBModel.FK_Naprawy_ToTable" ManuallyRouted="false" />
+        <AssociationConnector Association="SerwisDBModel.FK_Table_ToTable" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

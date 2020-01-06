@@ -1,0 +1,589 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SerwisDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'C:\USERS\IREK4\ONEDRIVE\DOCUMENTS\GITHUB\P_SERWISSAMOCHODOWY\SERWISSAMOCHODOWY\SERWISDB.MDF.dbo.CzasNaprawy' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="CzasNaprawy">
+          <Key>
+            <PropertyRef Name="NaprawaID" />
+          </Key>
+          <Property Name="NaprawaID" Type="int" Nullable="false" />
+          <Property Name="Od" Type="date" />
+          <Property Name="Do" Type="date" />
+        </EntityType>
+        <EntityType Name="Czesci">
+          <Key>
+            <PropertyRef Name="CzescID" />
+          </Key>
+          <Property Name="CzescID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NaprawaID" Type="int" Nullable="false" />
+          <Property Name="Nazwa" Type="varchar" MaxLength="50" />
+          <Property Name="Cena" Type="money" />
+        </EntityType>
+        <EntityType Name="Faktury">
+          <Key>
+            <PropertyRef Name="FakturaID" />
+          </Key>
+          <Property Name="FakturaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NaprawaID" Type="int" Nullable="false" />
+          <Property Name="KlientID" Type="int" Nullable="false" />
+          <Property Name="DataWystawienia" Type="date" />
+        </EntityType>
+        <EntityType Name="Kadra">
+          <Key>
+            <PropertyRef Name="PracownikID" />
+          </Key>
+          <Property Name="PracownikID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Imie" Type="varchar" MaxLength="50" />
+          <Property Name="Nazwisko" Type="varchar" MaxLength="50" />
+          <Property Name="Stanowisko" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Klient">
+          <Key>
+            <PropertyRef Name="KlientID" />
+          </Key>
+          <Property Name="KlientID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Imie" Type="varchar" MaxLength="50" />
+          <Property Name="Nazwisko" Type="varchar" MaxLength="50" />
+          <Property Name="Nip" Type="varchar" MaxLength="50" />
+          <Property Name="Telefon" Type="varchar" MaxLength="20" />
+          <Property Name="Adres" Type="varchar" MaxLength="80" />
+          <Property Name="KodPocztowy" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'C:\USERS\IREK4\ONEDRIVE\DOCUMENTS\GITHUB\P_SERWISSAMOCHODOWY\SERWISSAMOCHODOWY\SERWISDB.MDF.dbo.LogData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="LogData">
+          <Key>
+            <PropertyRef Name="KlientID" />
+          </Key>
+          <Property Name="KlientID" Type="int" Nullable="false" />
+          <Property Name="Login" Type="varchar" MaxLength="50" />
+          <Property Name="Haslo" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Naprawy">
+          <Key>
+            <PropertyRef Name="NaprawaID" />
+          </Key>
+          <Property Name="NaprawaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SamochodID" Type="int" Nullable="false" />
+          <Property Name="PracownikID" Type="int" Nullable="false" />
+          <Property Name="Robocizna" Type="money" />
+          <Property Name="GwarancjaDo" Type="date" />
+          <Property Name="OpisUwagi" Type="text" />
+        </EntityType>
+        <EntityType Name="Samochody">
+          <Key>
+            <PropertyRef Name="SamochodID" />
+          </Key>
+          <Property Name="SamochodID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KlientID" Type="int" Nullable="false" />
+          <Property Name="Marka" Type="varchar" MaxLength="50" />
+          <Property Name="Model" Type="varchar" MaxLength="50" />
+          <Property Name="VIN" Type="varchar" MaxLength="20" />
+          <Property Name="RokProdukcji" Type="date" />
+        </EntityType>
+        <Association Name="FK_Czesci_ToTable">
+          <End Role="Naprawy" Type="Self.Naprawy" Multiplicity="1" />
+          <End Role="Czesci" Type="Self.Czesci" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Naprawy">
+              <PropertyRef Name="NaprawaID" />
+            </Principal>
+            <Dependent Role="Czesci">
+              <PropertyRef Name="NaprawaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Faktury_ToTable">
+          <End Role="Naprawy" Type="Self.Naprawy" Multiplicity="1" />
+          <End Role="Faktury" Type="Self.Faktury" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Naprawy">
+              <PropertyRef Name="NaprawaID" />
+            </Principal>
+            <Dependent Role="Faktury">
+              <PropertyRef Name="NaprawaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Faktury_ToTable_1">
+          <End Role="Klient" Type="Self.Klient" Multiplicity="1" />
+          <End Role="Faktury" Type="Self.Faktury" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Klient">
+              <PropertyRef Name="KlientID" />
+            </Principal>
+            <Dependent Role="Faktury">
+              <PropertyRef Name="KlientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LogData_ToTable">
+          <End Role="Klient" Type="Self.Klient" Multiplicity="1" />
+          <End Role="LogData" Type="Self.LogData" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Klient">
+              <PropertyRef Name="KlientID" />
+            </Principal>
+            <Dependent Role="LogData">
+              <PropertyRef Name="KlientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Naprawy_ToTable">
+          <End Role="Samochody" Type="Self.Samochody" Multiplicity="1" />
+          <End Role="Naprawy" Type="Self.Naprawy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Samochody">
+              <PropertyRef Name="SamochodID" />
+            </Principal>
+            <Dependent Role="Naprawy">
+              <PropertyRef Name="SamochodID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Naprawy_ToTable_1">
+          <End Role="Kadra" Type="Self.Kadra" Multiplicity="1" />
+          <End Role="Naprawy" Type="Self.Naprawy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kadra">
+              <PropertyRef Name="PracownikID" />
+            </Principal>
+            <Dependent Role="Naprawy">
+              <PropertyRef Name="PracownikID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Samochody_ToTable">
+          <End Role="Klient" Type="Self.Klient" Multiplicity="1" />
+          <End Role="Samochody" Type="Self.Samochody" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Klient">
+              <PropertyRef Name="KlientID" />
+            </Principal>
+            <Dependent Role="Samochody">
+              <PropertyRef Name="KlientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Table_ToTable">
+          <End Role="Naprawy" Type="Self.Naprawy" Multiplicity="1" />
+          <End Role="CzasNaprawy" Type="Self.CzasNaprawy" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Naprawy">
+              <PropertyRef Name="NaprawaID" />
+            </Principal>
+            <Dependent Role="CzasNaprawy">
+              <PropertyRef Name="NaprawaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SerwisDBModelStoreContainer">
+          <EntitySet Name="Czesci" EntityType="Self.Czesci" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Faktury" EntityType="Self.Faktury" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Kadra" EntityType="Self.Kadra" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Klient" EntityType="Self.Klient" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Naprawy" EntityType="Self.Naprawy" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Samochody" EntityType="Self.Samochody" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CzasNaprawy" EntityType="Self.CzasNaprawy" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [CzasNaprawy].[NaprawaID] AS [NaprawaID], 
+    [CzasNaprawy].[Od] AS [Od], 
+    [CzasNaprawy].[Do] AS [Do]
+    FROM [dbo].[CzasNaprawy] AS [CzasNaprawy]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="LogData" EntityType="Self.LogData" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [LogData].[KlientID] AS [KlientID], 
+    [LogData].[Login] AS [Login], 
+    [LogData].[Haslo] AS [Haslo]
+    FROM [dbo].[LogData] AS [LogData]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Czesci_ToTable" Association="Self.FK_Czesci_ToTable">
+            <End Role="Naprawy" EntitySet="Naprawy" />
+            <End Role="Czesci" EntitySet="Czesci" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Faktury_ToTable" Association="Self.FK_Faktury_ToTable">
+            <End Role="Naprawy" EntitySet="Naprawy" />
+            <End Role="Faktury" EntitySet="Faktury" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Faktury_ToTable_1" Association="Self.FK_Faktury_ToTable_1">
+            <End Role="Klient" EntitySet="Klient" />
+            <End Role="Faktury" EntitySet="Faktury" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LogData_ToTable" Association="Self.FK_LogData_ToTable">
+            <End Role="Klient" EntitySet="Klient" />
+            <End Role="LogData" EntitySet="LogData" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Naprawy_ToTable" Association="Self.FK_Naprawy_ToTable">
+            <End Role="Samochody" EntitySet="Samochody" />
+            <End Role="Naprawy" EntitySet="Naprawy" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Naprawy_ToTable_1" Association="Self.FK_Naprawy_ToTable_1">
+            <End Role="Kadra" EntitySet="Kadra" />
+            <End Role="Naprawy" EntitySet="Naprawy" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Samochody_ToTable" Association="Self.FK_Samochody_ToTable">
+            <End Role="Klient" EntitySet="Klient" />
+            <End Role="Samochody" EntitySet="Samochody" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Table_ToTable" Association="Self.FK_Table_ToTable">
+            <End Role="Naprawy" EntitySet="Naprawy" />
+            <End Role="CzasNaprawy" EntitySet="CzasNaprawy" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SerwisDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Czesci">
+          <Key>
+            <PropertyRef Name="CzescID" />
+          </Key>
+          <Property Name="CzescID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NaprawaID" Type="Int32" Nullable="false" />
+          <Property Name="Nazwa" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Cena" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="Naprawy" Relationship="Self.FK_Czesci_ToTable" FromRole="Czesci" ToRole="Naprawy" />
+        </EntityType>
+        <EntityType Name="Faktury">
+          <Key>
+            <PropertyRef Name="FakturaID" />
+          </Key>
+          <Property Name="FakturaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NaprawaID" Type="Int32" Nullable="false" />
+          <Property Name="KlientID" Type="Int32" Nullable="false" />
+          <Property Name="DataWystawienia" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Naprawy" Relationship="Self.FK_Faktury_ToTable" FromRole="Faktury" ToRole="Naprawy" />
+          <NavigationProperty Name="Klient" Relationship="Self.FK_Faktury_ToTable_1" FromRole="Faktury" ToRole="Klient" />
+        </EntityType>
+        <EntityType Name="Kadra">
+          <Key>
+            <PropertyRef Name="PracownikID" />
+          </Key>
+          <Property Name="PracownikID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Imie" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Nazwisko" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Stanowisko" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Naprawy" Relationship="Self.FK_Naprawy_ToTable_1" FromRole="Kadra" ToRole="Naprawy" />
+        </EntityType>
+        <EntityType Name="Klient">
+          <Key>
+            <PropertyRef Name="KlientID" />
+          </Key>
+          <Property Name="KlientID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Imie" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Nazwisko" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Nip" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Telefon" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Adres" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="KodPocztowy" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Faktury" Relationship="Self.FK_Faktury_ToTable_1" FromRole="Klient" ToRole="Faktury" />
+          <NavigationProperty Name="LogData" Relationship="Self.FK_LogData_ToTable" FromRole="Klient" ToRole="LogData" />
+          <NavigationProperty Name="Samochody" Relationship="Self.FK_Samochody_ToTable" FromRole="Klient" ToRole="Samochody" />
+        </EntityType>
+        <EntityType Name="Naprawy">
+          <Key>
+            <PropertyRef Name="NaprawaID" />
+          </Key>
+          <Property Name="NaprawaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SamochodID" Type="Int32" Nullable="false" />
+          <Property Name="PracownikID" Type="Int32" Nullable="false" />
+          <Property Name="Robocizna" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="GwarancjaDo" Type="DateTime" Precision="0" />
+          <Property Name="OpisUwagi" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Czesci" Relationship="Self.FK_Czesci_ToTable" FromRole="Naprawy" ToRole="Czesci" />
+          <NavigationProperty Name="Faktury" Relationship="Self.FK_Faktury_ToTable" FromRole="Naprawy" ToRole="Faktury" />
+          <NavigationProperty Name="Kadra" Relationship="Self.FK_Naprawy_ToTable_1" FromRole="Naprawy" ToRole="Kadra" />
+          <NavigationProperty Name="Samochody" Relationship="Self.FK_Naprawy_ToTable" FromRole="Naprawy" ToRole="Samochody" />
+          <NavigationProperty Name="CzasNaprawy" Relationship="Self.FK_Table_ToTable" FromRole="Naprawy" ToRole="CzasNaprawy" />
+        </EntityType>
+        <EntityType Name="Samochody">
+          <Key>
+            <PropertyRef Name="SamochodID" />
+          </Key>
+          <Property Name="SamochodID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KlientID" Type="Int32" Nullable="false" />
+          <Property Name="Marka" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Model" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="VIN" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="RokProdukcji" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Klient" Relationship="Self.FK_Samochody_ToTable" FromRole="Samochody" ToRole="Klient" />
+          <NavigationProperty Name="Naprawy" Relationship="Self.FK_Naprawy_ToTable" FromRole="Samochody" ToRole="Naprawy" />
+        </EntityType>
+        <EntityType Name="CzasNaprawy">
+          <Key>
+            <PropertyRef Name="NaprawaID" />
+          </Key>
+          <Property Name="NaprawaID" Type="Int32" Nullable="false" />
+          <Property Name="Od" Type="DateTime" Precision="0" />
+          <Property Name="Do" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Naprawy" Relationship="Self.FK_Table_ToTable" FromRole="CzasNaprawy" ToRole="Naprawy" />
+        </EntityType>
+        <EntityType Name="LogData">
+          <Key>
+            <PropertyRef Name="KlientID" />
+          </Key>
+          <Property Name="KlientID" Type="Int32" Nullable="false" />
+          <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Haslo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Klient" Relationship="Self.FK_LogData_ToTable" FromRole="LogData" ToRole="Klient" />
+        </EntityType>
+        <Association Name="FK_Czesci_ToTable">
+          <End Role="Naprawy" Type="Self.Naprawy" Multiplicity="1" />
+          <End Role="Czesci" Type="Self.Czesci" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Naprawy">
+              <PropertyRef Name="NaprawaID" />
+            </Principal>
+            <Dependent Role="Czesci">
+              <PropertyRef Name="NaprawaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Faktury_ToTable">
+          <End Role="Naprawy" Type="Self.Naprawy" Multiplicity="1" />
+          <End Role="Faktury" Type="Self.Faktury" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Naprawy">
+              <PropertyRef Name="NaprawaID" />
+            </Principal>
+            <Dependent Role="Faktury">
+              <PropertyRef Name="NaprawaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Faktury_ToTable_1">
+          <End Role="Klient" Type="Self.Klient" Multiplicity="1" />
+          <End Role="Faktury" Type="Self.Faktury" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Klient">
+              <PropertyRef Name="KlientID" />
+            </Principal>
+            <Dependent Role="Faktury">
+              <PropertyRef Name="KlientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Naprawy_ToTable_1">
+          <End Role="Kadra" Type="Self.Kadra" Multiplicity="1" />
+          <End Role="Naprawy" Type="Self.Naprawy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kadra">
+              <PropertyRef Name="PracownikID" />
+            </Principal>
+            <Dependent Role="Naprawy">
+              <PropertyRef Name="PracownikID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LogData_ToTable">
+          <End Role="Klient" Type="Self.Klient" Multiplicity="1" />
+          <End Role="LogData" Type="Self.LogData" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Klient">
+              <PropertyRef Name="KlientID" />
+            </Principal>
+            <Dependent Role="LogData">
+              <PropertyRef Name="KlientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Samochody_ToTable">
+          <End Role="Klient" Type="Self.Klient" Multiplicity="1" />
+          <End Role="Samochody" Type="Self.Samochody" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Klient">
+              <PropertyRef Name="KlientID" />
+            </Principal>
+            <Dependent Role="Samochody">
+              <PropertyRef Name="KlientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Naprawy_ToTable">
+          <End Role="Samochody" Type="Self.Samochody" Multiplicity="1" />
+          <End Role="Naprawy" Type="Self.Naprawy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Samochody">
+              <PropertyRef Name="SamochodID" />
+            </Principal>
+            <Dependent Role="Naprawy">
+              <PropertyRef Name="SamochodID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Table_ToTable">
+          <End Role="Naprawy" Type="Self.Naprawy" Multiplicity="1" />
+          <End Role="CzasNaprawy" Type="Self.CzasNaprawy" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Naprawy">
+              <PropertyRef Name="NaprawaID" />
+            </Principal>
+            <Dependent Role="CzasNaprawy">
+              <PropertyRef Name="NaprawaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SerwisDBEntities3" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Czesci" EntityType="Self.Czesci" />
+          <EntitySet Name="Faktury" EntityType="Self.Faktury" />
+          <EntitySet Name="Kadra" EntityType="Self.Kadra" />
+          <EntitySet Name="Klient" EntityType="Self.Klient" />
+          <EntitySet Name="Naprawy" EntityType="Self.Naprawy" />
+          <EntitySet Name="Samochody" EntityType="Self.Samochody" />
+          <EntitySet Name="CzasNaprawy" EntityType="Self.CzasNaprawy" />
+          <EntitySet Name="LogData" EntityType="Self.LogData" />
+          <AssociationSet Name="FK_Czesci_ToTable" Association="Self.FK_Czesci_ToTable">
+            <End Role="Naprawy" EntitySet="Naprawy" />
+            <End Role="Czesci" EntitySet="Czesci" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Faktury_ToTable" Association="Self.FK_Faktury_ToTable">
+            <End Role="Naprawy" EntitySet="Naprawy" />
+            <End Role="Faktury" EntitySet="Faktury" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Faktury_ToTable_1" Association="Self.FK_Faktury_ToTable_1">
+            <End Role="Klient" EntitySet="Klient" />
+            <End Role="Faktury" EntitySet="Faktury" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Naprawy_ToTable_1" Association="Self.FK_Naprawy_ToTable_1">
+            <End Role="Kadra" EntitySet="Kadra" />
+            <End Role="Naprawy" EntitySet="Naprawy" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LogData_ToTable" Association="Self.FK_LogData_ToTable">
+            <End Role="Klient" EntitySet="Klient" />
+            <End Role="LogData" EntitySet="LogData" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Samochody_ToTable" Association="Self.FK_Samochody_ToTable">
+            <End Role="Klient" EntitySet="Klient" />
+            <End Role="Samochody" EntitySet="Samochody" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Naprawy_ToTable" Association="Self.FK_Naprawy_ToTable">
+            <End Role="Samochody" EntitySet="Samochody" />
+            <End Role="Naprawy" EntitySet="Naprawy" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Table_ToTable" Association="Self.FK_Table_ToTable">
+            <End Role="Naprawy" EntitySet="Naprawy" />
+            <End Role="CzasNaprawy" EntitySet="CzasNaprawy" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SerwisDBModelStoreContainer" CdmEntityContainer="SerwisDBEntities3">
+          <EntitySetMapping Name="Czesci">
+            <EntityTypeMapping TypeName="SerwisDBModel.Czesci">
+              <MappingFragment StoreEntitySet="Czesci">
+                <ScalarProperty Name="CzescID" ColumnName="CzescID" />
+                <ScalarProperty Name="NaprawaID" ColumnName="NaprawaID" />
+                <ScalarProperty Name="Nazwa" ColumnName="Nazwa" />
+                <ScalarProperty Name="Cena" ColumnName="Cena" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Faktury">
+            <EntityTypeMapping TypeName="SerwisDBModel.Faktury">
+              <MappingFragment StoreEntitySet="Faktury">
+                <ScalarProperty Name="FakturaID" ColumnName="FakturaID" />
+                <ScalarProperty Name="NaprawaID" ColumnName="NaprawaID" />
+                <ScalarProperty Name="KlientID" ColumnName="KlientID" />
+                <ScalarProperty Name="DataWystawienia" ColumnName="DataWystawienia" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Kadra">
+            <EntityTypeMapping TypeName="SerwisDBModel.Kadra">
+              <MappingFragment StoreEntitySet="Kadra">
+                <ScalarProperty Name="PracownikID" ColumnName="PracownikID" />
+                <ScalarProperty Name="Imie" ColumnName="Imie" />
+                <ScalarProperty Name="Nazwisko" ColumnName="Nazwisko" />
+                <ScalarProperty Name="Stanowisko" ColumnName="Stanowisko" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Klient">
+            <EntityTypeMapping TypeName="SerwisDBModel.Klient">
+              <MappingFragment StoreEntitySet="Klient">
+                <ScalarProperty Name="KlientID" ColumnName="KlientID" />
+                <ScalarProperty Name="Imie" ColumnName="Imie" />
+                <ScalarProperty Name="Nazwisko" ColumnName="Nazwisko" />
+                <ScalarProperty Name="Nip" ColumnName="Nip" />
+                <ScalarProperty Name="Telefon" ColumnName="Telefon" />
+                <ScalarProperty Name="Adres" ColumnName="Adres" />
+                <ScalarProperty Name="KodPocztowy" ColumnName="KodPocztowy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Naprawy">
+            <EntityTypeMapping TypeName="SerwisDBModel.Naprawy">
+              <MappingFragment StoreEntitySet="Naprawy">
+                <ScalarProperty Name="NaprawaID" ColumnName="NaprawaID" />
+                <ScalarProperty Name="SamochodID" ColumnName="SamochodID" />
+                <ScalarProperty Name="PracownikID" ColumnName="PracownikID" />
+                <ScalarProperty Name="Robocizna" ColumnName="Robocizna" />
+                <ScalarProperty Name="GwarancjaDo" ColumnName="GwarancjaDo" />
+                <ScalarProperty Name="OpisUwagi" ColumnName="OpisUwagi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Samochody">
+            <EntityTypeMapping TypeName="SerwisDBModel.Samochody">
+              <MappingFragment StoreEntitySet="Samochody">
+                <ScalarProperty Name="SamochodID" ColumnName="SamochodID" />
+                <ScalarProperty Name="KlientID" ColumnName="KlientID" />
+                <ScalarProperty Name="Marka" ColumnName="Marka" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="VIN" ColumnName="VIN" />
+                <ScalarProperty Name="RokProdukcji" ColumnName="RokProdukcji" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CzasNaprawy">
+            <EntityTypeMapping TypeName="SerwisDBModel.CzasNaprawy">
+              <MappingFragment StoreEntitySet="CzasNaprawy">
+                <ScalarProperty Name="NaprawaID" ColumnName="NaprawaID" />
+                <ScalarProperty Name="Od" ColumnName="Od" />
+                <ScalarProperty Name="Do" ColumnName="Do" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LogData">
+            <EntityTypeMapping TypeName="SerwisDBModel.LogData">
+              <MappingFragment StoreEntitySet="LogData">
+                <ScalarProperty Name="KlientID" ColumnName="KlientID" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Haslo" ColumnName="Haslo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

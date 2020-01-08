@@ -13,6 +13,7 @@ namespace SerwisSamochodowy
                                         "Status bierzacych napraw",
                                         "Faktury/Paragony",
                                         "Zaktualizuj swoje dane",
+                                        "Zmien hasło",
                                         "Wyloguj"};
         static int aktywnaPozycjaMenu = 0;
         public static void StartMenu(Logged a)
@@ -81,64 +82,18 @@ namespace SerwisSamochodowy
                 case 0:
                     Console.Clear(); a.WypiszDane(); break;
                 case 1:
-                    Console.Clear(); HistoriaNapraw(a.id); break;
+                    Console.Clear(); a.HistoriaNapraw(); Console.ReadKey(); break;
                 case 2:
-                    Console.Clear(); opcjaWBudowie(); break;
+                    Console.Clear(); a.StatusNapraw(); break;
                 case 3:
-                    Console.Clear(); opcjaWBudowie(); break;
+                    Console.Clear(); PodMenu2.StartMenu(a); break;
                 case 4:
-                    Console.Clear();
-                    Console.WriteLine("Wpisz 1 jezeli chcesz ręcznie zaktualizowac dane " +
-                        "\n2 jeżeli chces zimportowac dane z pliku txt.");
-                    int wybor = Convert.ToInt32(Console.ReadLine());
-                    if (wybor == 1)
-                        a.RecznaAktualizacjaDanych(a.id);
-                    else
-                    {
-                        Console.WriteLine("Dane maja byc wpisane linie po lini w takiej samej kolejnoscie jak ponizej:" +
-                            "\nNip" +
-                            "\nTelefon" +
-                            "\nAdres" +
-                            "\nKod Pocztowy" +
-                            "\n Wprowadzenie danych inaczej bedzie błędem!.");
-                        Console.WriteLine("Podaj scieżke do pliku:");
-                        string sciezka = Console.ReadLine();
-                        a.ImportAktualizacjaDanych(sciezka);
-                    }
-                    break;
+                    Console.Clear(); PodMenu.StartMenu(a); break;
                 case 5:
+                    Console.Clear(); a.ZmienHaslo(); break;
+                case 6:
                     Environment.Exit(0); break;
             }
-        }
-        static void opcjaWBudowie()
-        {
-            Console.SetCursorPosition(12, 4);
-            Console.Write("Opcja w budowie");
-            Console.ReadKey();
-        }
-
-        static void HistoriaNapraw(int id)
-        {
-            //przeszukuje baze i zwraca naprawy
-            try
-            {
-                SerwisDBEntities3 db = new SerwisDBEntities3();
-                var lista = db.Naprawy.Where(a => a.Samochody.KlientID == id);
-                foreach(var x in lista)
-                {
-                    Console.WriteLine($"Id Naprawy: {x.NaprawaID}, Id Samochodu: {x.SamochodID},Id Pracownika: {x.PracownikID}\n," +
-                        $" Robocizna: {x.Robocizna}, Gwarancja Do: {x.GwarancjaDo},\n Opis: {x.OpisUwagi}");
-                }
-                
-            }
-            catch (SystemException e)
-            {
-                Console.WriteLine("Dla tego użytkownika nie było wykonanych żadnych napraw");
-                
-            }
-
-            //Żeby się odrazu nie wylączało
-            Console.ReadKey();
         }
     }
 }

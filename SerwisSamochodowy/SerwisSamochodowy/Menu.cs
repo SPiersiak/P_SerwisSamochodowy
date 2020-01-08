@@ -8,14 +8,18 @@ namespace SerwisSamochodowy
 {
     static class Menu
     {
+        //tablica z nazwami które beda uzyte jako nazwy menu
         static string[] pozycjaMenu = {"Wyświetlenie danych klienta",
                                         "Historia napraw",
-                                        "Status bierzacych napraw",
+                                        "Status bieżacych napraw",
                                         "Faktury/Paragony",
                                         "Zaktualizuj swoje dane",
                                         "Zmien hasło",
                                         "Wyloguj"};
+
         static int aktywnaPozycjaMenu = 0;
+
+        //metoda rozpoczynaja wyswietlanie menu, wywoływana jest ona w funkcji main, wywoluje ona inne metody do wyswietlania menu
         public static void StartMenu(Logged a)
         {
             Console.Title = "Serwis Samochodowy";
@@ -27,13 +31,16 @@ namespace SerwisSamochodowy
                 UruchomOpcje(a);
             }
         }
+
+        //metoda wypisujaca na ekranie menu
         static void PokazMenu()
         {
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.DarkCyan;
-            Console.WriteLine("Po menu poruszaj sie strałkami, jeżeli chcesz wybrac" +
-                "zaznaczoną opcje kliknij enter, jeżeli chcesz opuscic wybrana kategorie klknij Esc");
+            Console.WriteLine("Po menu poruszaj sie strzałkami, jeżeli chcesz wybrac " +
+                                "zaznaczoną opcje kliknij Enter, \n" +
+                                "jeżeli chcesz opuscic wybrana kategorie klknij Esc");
             Console.WriteLine();
             for (int i = 0; i < pozycjaMenu.Length; i++)
             {
@@ -51,6 +58,8 @@ namespace SerwisSamochodowy
                 }
             }
         }
+
+        //metoda służaca do nawigacji po menu
         static void WybieranieOpcji()
         {
             do
@@ -75,6 +84,8 @@ namespace SerwisSamochodowy
                     break;
             } while (true);
         }
+
+        //metoda urchamiajaca metody które zostały wybrane w menu
         static void UruchomOpcje(Logged a)
         {
             switch (aktywnaPozycjaMenu)
@@ -92,6 +103,7 @@ namespace SerwisSamochodowy
                 case 5:
                     Console.Clear(); a.ZmienHaslo(); break;
                 case 6:
+                    System.Windows.Forms.Application.Restart();
                     Environment.Exit(0); break;
             }
         }

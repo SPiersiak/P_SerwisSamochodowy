@@ -8,9 +8,13 @@ namespace SerwisSamochodowy
 {
     static class PodMenu2
     {
+        //tablica z nazwami które beda uzyte jako nazwy menu
         static string[] pozycjaMenu = {"Pobierz Fakture",
                                         "Pobierz Paragon"};
+
         static int aktywnaPozycjaMenu = 0;
+
+        //metoda rozpoczynaja wyswietlanie menu, wywoływana jest ona w metodzie uruchom opcje w klasie menu jako podmenu, wywoluje ona inne metody do wyswietlania menu
         public static void StartMenu(Logged a)
         {
             Console.CursorVisible = false;
@@ -21,6 +25,8 @@ namespace SerwisSamochodowy
                 UruchomOpcje(a);
             }
         }
+
+        //metoda wypisujaca na ekranie menu
         static void PokazMenu()
         {
             Console.BackgroundColor = ConsoleColor.Gray;
@@ -43,6 +49,8 @@ namespace SerwisSamochodowy
                 }
             }
         }
+
+        //metoda służaca do nawigacji po menu
         static void WybieranieOpcji(Logged obj)
         {
             do
@@ -66,18 +74,18 @@ namespace SerwisSamochodowy
                     break;
             } while (true);
         }
+
+        //metoda urchamiajaca metody które zostały wybrane w menu
         static void UruchomOpcje(Logged a)
         {
             switch (aktywnaPozycjaMenu)
             {
                 case 0:
                     Console.Clear();
-                    a.HistoriaNapraw();
                     a.WystawFakture();
                     break;
                 case 1:
                     Console.Clear();
-                    a.HistoriaNapraw();
                     a.WystawParagon();
                     break;
             }

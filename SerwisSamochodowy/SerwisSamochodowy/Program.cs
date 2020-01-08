@@ -13,14 +13,16 @@ namespace SerwisSamochodowy
     {
         //id zalogowanego uzytkownika domyslnie 0 
         static int id = 0;
+
+        //metoda sprawdzajaca wpisane dane przez uzytkownika z danymi w bazie danych i pozwalajaca sie zalogowac
         public static bool Logowanie()
         {
-
             Console.WriteLine("Do logowania nalezy użyć loginu i hasła podanych Panu/Pani przez serwis!");
             Console.WriteLine();
             Console.WriteLine("Podaj login:");
             string log = Console.ReadLine();
             Console.WriteLine("Podaj hasło:");
+            //Wpisywane hasło bedzie niewidoczne, na ekranie nie pojawiają sie żadne znaki podczas wpisywania
             string has = null;
             while (true)
             {
@@ -29,9 +31,7 @@ namespace SerwisSamochodowy
                     break;
                 has += key.KeyChar;
             }
-            /*
-                sprawdzenie poprawnosci podanych danych do logowania do zrobienia; Jeżeli sa poprawne to zwrócenie wartosci true jezeli nie to zwrócenie wartosci false.
-             */
+
             try
             {
                 SerwisDBEntities3 db = new SerwisDBEntities3();
@@ -43,14 +43,11 @@ namespace SerwisSamochodowy
             {
                 //zmienia kolor na red żeby błąd był widoczny
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Nie ma konta o takim loginie i hasle. Spróbuj ponownie \n");
+                Console.WriteLine("Nie ma konta o takim loginie lub hasle. Spróbuj ponownie \n");
                 //czeka 1s
                 System.Threading.Thread.Sleep(1000);
                 return false;
             }
-            
-
-
             return true;
         }
 
@@ -69,9 +66,9 @@ namespace SerwisSamochodowy
                 Console.Clear(); 
             }
             
-
             //utworzenie objektu zalogowanego klienta. Konstruktor powinien wpisać dane z bazy danych do pól danych w klasie.
             Logged Obj = new Logged();
+
             //dodaje id klienta bo po nim rozpoznaje uzytkownika
             Obj.id = id;
 

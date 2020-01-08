@@ -345,7 +345,8 @@ namespace SerwisSamochodowy
                     {
                         Console.WriteLine($"Nr Naprawy: {x._nrNaprawy}" +
                             $"\nOpis: {x._opis}" +
-                            $"\nTrwa od: {x._od} W Trakcie");
+                            $"\nTrwa od: {x._od} W Trakcie" +
+                            $"\n-------------------------------------------------------------------------------------------------------------------");
                     }
                 }
             }

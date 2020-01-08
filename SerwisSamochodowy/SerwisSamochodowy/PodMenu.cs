@@ -31,17 +31,17 @@ namespace SerwisSamochodowy
         {
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.Clear();
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
             Console.WriteLine();
             for (int i = 0; i < pozycjaMenu.Length; i++)
             {
                 if (i == aktywnaPozycjaMenu)
                 {
-                    Console.BackgroundColor = ConsoleColor.DarkCyan;
+                    Console.BackgroundColor = ConsoleColor.DarkBlue;
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("{0,35}", pozycjaMenu[i]);
                     Console.BackgroundColor = ConsoleColor.Gray;
-                    Console.ForegroundColor = ConsoleColor.DarkCyan;
+                    Console.ForegroundColor = ConsoleColor.DarkBlue;
                 }
                 else
                 {

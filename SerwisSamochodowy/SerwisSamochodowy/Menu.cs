@@ -37,7 +37,7 @@ namespace SerwisSamochodowy
         {
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.Clear();
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
             Console.WriteLine("Po menu poruszaj sie strzałkami, jeżeli chcesz wybrac " +
                                 "zaznaczoną opcje kliknij Enter, \n" +
                                 "jeżeli chcesz opuscic wybrana kategorie klknij Esc");
@@ -46,11 +46,11 @@ namespace SerwisSamochodowy
             {
                 if (i == aktywnaPozycjaMenu)
                 {
-                    Console.BackgroundColor = ConsoleColor.DarkCyan;
+                    Console.BackgroundColor = ConsoleColor.DarkBlue;
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("{0,35}", pozycjaMenu[i]);
                     Console.BackgroundColor = ConsoleColor.Gray;
-                    Console.ForegroundColor = ConsoleColor.DarkCyan;
+                    Console.ForegroundColor = ConsoleColor.DarkBlue;
                 }
                 else
                 {

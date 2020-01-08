@@ -55,14 +55,14 @@ namespace SerwisSamochodowy
         {
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.Clear();
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
             //sprawdzenie poprawnosci logowania
             //trwa dopóki uzytkownik sie nie zaloguje 
             //bool SprPoprawnosciLogowania = Logowanie();
             //Jeżeli funkcja logowanie zwróci false to powinien wyświetlic sie odpowiedni komunikat i nastąpic ponowny powrót do tej funkcji
             while (Logowanie() == false)
             {
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.ForegroundColor = ConsoleColor.DarkBlue;
                 Console.Clear(); 
             }
             

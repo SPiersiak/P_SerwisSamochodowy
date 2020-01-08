@@ -15,6 +15,7 @@ namespace SerwisSamochodowy
         static int id = 0;
         public static bool Logowanie()
         {
+
             Console.WriteLine("Do logowania nalezy użyć loginu i hasła podanych Panu/Pani przez serwis!");
             Console.WriteLine();
             Console.WriteLine("Podaj login:");
@@ -27,7 +28,7 @@ namespace SerwisSamochodowy
                 if (key.Key == ConsoleKey.Enter)
                     break;
                 has += key.KeyChar;
-            }   
+            }
             /*
                 sprawdzenie poprawnosci podanych danych do logowania do zrobienia; Jeżeli sa poprawne to zwrócenie wartosci true jezeli nie to zwrócenie wartosci false.
              */
@@ -38,22 +39,35 @@ namespace SerwisSamochodowy
                 //ustawia zmienna na id uzytkownika z takim haslem i loginem
                 id = user.KlientID;
             }
-            catch (SystemException e)
+            catch (Exception e)
             {
-                Console.WriteLine("Nie ma konta o takim loginie i hasle. Spróbuj ponownie \n{0}",e);
+                //zmienia kolor na red żeby błąd był widoczny
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Nie ma konta o takim loginie i hasle. Spróbuj ponownie \n");
+                //czeka 1s
+                System.Threading.Thread.Sleep(1000);
                 return false;
             }
+            
+
 
             return true;
         }
 
         static void Main(string[] args)
         {
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
             //sprawdzenie poprawnosci logowania
             //trwa dopóki uzytkownik sie nie zaloguje 
             //bool SprPoprawnosciLogowania = Logowanie();
             //Jeżeli funkcja logowanie zwróci false to powinien wyświetlic sie odpowiedni komunikat i nastąpic ponowny powrót do tej funkcji
-            while (Logowanie() == false){ }
+            while (Logowanie() == false)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.Clear(); 
+            }
             
 
             //utworzenie objektu zalogowanego klienta. Konstruktor powinien wpisać dane z bazy danych do pól danych w klasie.

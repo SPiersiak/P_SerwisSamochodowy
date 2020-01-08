@@ -76,7 +76,11 @@ namespace SerwisSamochodowy
                     Console.Clear(); Console.WriteLine("Dane maja byc wpisane w jednej lini rozdzielone przecinkami,\n" +
                         "podajac sciezke pamietaj ze musisz wpisac podwójne \\!");
                     Console.WriteLine("Podaj scieżke do pliku:");
+                    //pokazuje kursor aby ułatwić wpisywanie
+                    Console.CursorVisible = true;
                     string sciezka = Console.ReadLine();
+                    //ukrywa kursor
+                    Console.CursorVisible = false;
                     a.ImportAktualizacjaDanych(sciezka); break;
             }
         }

@@ -29,9 +29,9 @@ namespace SerwisSamochodowy
         public virtual DbSet<Faktury> Faktury { get; set; }
         public virtual DbSet<Kadra> Kadra { get; set; }
         public virtual DbSet<Klient> Klient { get; set; }
+        public virtual DbSet<LogData> LogData { get; set; }
         public virtual DbSet<Naprawy> Naprawy { get; set; }
         public virtual DbSet<Samochody> Samochody { get; set; }
         public virtual DbSet<CzasNaprawy> CzasNaprawy { get; set; }
-        public virtual DbSet<LogData> LogData { get; set; }
     }
 }

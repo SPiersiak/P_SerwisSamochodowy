@@ -18,6 +18,7 @@ namespace SerwisSamochodowy
         public Klient()
         {
             this.Faktury = new HashSet<Faktury>();
+            this.LogData = new HashSet<LogData>();
             this.Samochody = new HashSet<Samochody>();
         }
     
@@ -31,7 +32,8 @@ namespace SerwisSamochodowy
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Faktury> Faktury { get; set; }
-        public virtual LogData LogData { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<LogData> LogData { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Samochody> Samochody { get; set; }
     }

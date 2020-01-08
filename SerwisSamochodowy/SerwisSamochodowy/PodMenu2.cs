@@ -8,7 +8,7 @@ namespace SerwisSamochodowy
 {
     static class PodMenu2
     {
-        static string[] pozycjaMenu = {"Popbierz Fakture",
+        static string[] pozycjaMenu = {"Pobierz Fakture",
                                         "Pobierz Paragon"};
         static int aktywnaPozycjaMenu = 0;
         public static void StartMenu(Logged a)

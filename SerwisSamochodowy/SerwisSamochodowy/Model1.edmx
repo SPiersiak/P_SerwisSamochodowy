@@ -52,14 +52,13 @@ warning 6002: The table/view 'C:\USERS\IREK4\ONEDRIVE\DOCUMENTS\GITHUB\P_SERWISS
           <Property Name="Nip" Type="varchar" MaxLength="50" />
           <Property Name="Telefon" Type="varchar" MaxLength="20" />
           <Property Name="Adres" Type="varchar" MaxLength="80" />
-          <Property Name="KodPocztowy" Type="varchar" MaxLength="10" />
+          <Property Name="KodPocztowy" Type="varchar" MaxLength="20" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'C:\USERS\IREK4\ONEDRIVE\DOCUMENTS\GITHUB\P_SERWISSAMOCHODOWY\SERWISSAMOCHODOWY\SERWISDB.MDF.dbo.LogData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="LogData">
           <Key>
-            <PropertyRef Name="KlientID" />
+            <PropertyRef Name="UserID" />
           </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="KlientID" Type="int" Nullable="false" />
           <Property Name="Login" Type="varchar" MaxLength="50" />
           <Property Name="Haslo" Type="varchar" MaxLength="50" />
@@ -124,7 +123,7 @@ warning 6002: The table/view 'C:\USERS\IREK4\ONEDRIVE\DOCUMENTS\GITHUB\P_SERWISS
         </Association>
         <Association Name="FK_LogData_ToTable">
           <End Role="Klient" Type="Self.Klient" Multiplicity="1" />
-          <End Role="LogData" Type="Self.LogData" Multiplicity="0..1" />
+          <End Role="LogData" Type="Self.LogData" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Klient">
               <PropertyRef Name="KlientID" />
@@ -187,6 +186,7 @@ warning 6002: The table/view 'C:\USERS\IREK4\ONEDRIVE\DOCUMENTS\GITHUB\P_SERWISS
           <EntitySet Name="Faktury" EntityType="Self.Faktury" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Kadra" EntityType="Self.Kadra" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Klient" EntityType="Self.Klient" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LogData" EntityType="Self.LogData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Naprawy" EntityType="Self.Naprawy" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Samochody" EntityType="Self.Samochody" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CzasNaprawy" EntityType="Self.CzasNaprawy" store:Type="Tables" store:Schema="dbo">
@@ -195,13 +195,6 @@ warning 6002: The table/view 'C:\USERS\IREK4\ONEDRIVE\DOCUMENTS\GITHUB\P_SERWISS
     [CzasNaprawy].[Od] AS [Od], 
     [CzasNaprawy].[Do] AS [Do]
     FROM [dbo].[CzasNaprawy] AS [CzasNaprawy]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="LogData" EntityType="Self.LogData" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [LogData].[KlientID] AS [KlientID], 
-    [LogData].[Login] AS [Login], 
-    [LogData].[Haslo] AS [Haslo]
-    FROM [dbo].[LogData] AS [LogData]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_Czesci_ToTable" Association="Self.FK_Czesci_ToTable">
             <End Role="Naprawy" EntitySet="Naprawy" />
@@ -282,10 +275,20 @@ warning 6002: The table/view 'C:\USERS\IREK4\ONEDRIVE\DOCUMENTS\GITHUB\P_SERWISS
           <Property Name="Nip" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Telefon" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Adres" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
-          <Property Name="KodPocztowy" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="KodPocztowy" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Faktury" Relationship="Self.FK_Faktury_ToTable_1" FromRole="Klient" ToRole="Faktury" />
           <NavigationProperty Name="LogData" Relationship="Self.FK_LogData_ToTable" FromRole="Klient" ToRole="LogData" />
           <NavigationProperty Name="Samochody" Relationship="Self.FK_Samochody_ToTable" FromRole="Klient" ToRole="Samochody" />
+        </EntityType>
+        <EntityType Name="LogData">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KlientID" Type="Int32" Nullable="false" />
+          <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Haslo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Klient" Relationship="Self.FK_LogData_ToTable" FromRole="LogData" ToRole="Klient" />
         </EntityType>
         <EntityType Name="Naprawy">
           <Key>
@@ -324,15 +327,6 @@ warning 6002: The table/view 'C:\USERS\IREK4\ONEDRIVE\DOCUMENTS\GITHUB\P_SERWISS
           <Property Name="Od" Type="DateTime" Precision="0" />
           <Property Name="Do" Type="DateTime" Precision="0" />
           <NavigationProperty Name="Naprawy" Relationship="Self.FK_Table_ToTable" FromRole="CzasNaprawy" ToRole="Naprawy" />
-        </EntityType>
-        <EntityType Name="LogData">
-          <Key>
-            <PropertyRef Name="KlientID" />
-          </Key>
-          <Property Name="KlientID" Type="Int32" Nullable="false" />
-          <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Haslo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Klient" Relationship="Self.FK_LogData_ToTable" FromRole="LogData" ToRole="Klient" />
         </EntityType>
         <Association Name="FK_Czesci_ToTable">
           <End Role="Naprawy" Type="Self.Naprawy" Multiplicity="1" />
@@ -384,7 +378,7 @@ warning 6002: The table/view 'C:\USERS\IREK4\ONEDRIVE\DOCUMENTS\GITHUB\P_SERWISS
         </Association>
         <Association Name="FK_LogData_ToTable">
           <End Role="Klient" Type="Self.Klient" Multiplicity="1" />
-          <End Role="LogData" Type="Self.LogData" Multiplicity="0..1" />
+          <End Role="LogData" Type="Self.LogData" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Klient">
               <PropertyRef Name="KlientID" />
@@ -435,10 +429,10 @@ warning 6002: The table/view 'C:\USERS\IREK4\ONEDRIVE\DOCUMENTS\GITHUB\P_SERWISS
           <EntitySet Name="Faktury" EntityType="Self.Faktury" />
           <EntitySet Name="Kadra" EntityType="Self.Kadra" />
           <EntitySet Name="Klient" EntityType="Self.Klient" />
+          <EntitySet Name="LogData" EntityType="Self.LogData" />
           <EntitySet Name="Naprawy" EntityType="Self.Naprawy" />
           <EntitySet Name="Samochody" EntityType="Self.Samochody" />
           <EntitySet Name="CzasNaprawy" EntityType="Self.CzasNaprawy" />
-          <EntitySet Name="LogData" EntityType="Self.LogData" />
           <AssociationSet Name="FK_Czesci_ToTable" Association="Self.FK_Czesci_ToTable">
             <End Role="Naprawy" EntitySet="Naprawy" />
             <End Role="Czesci" EntitySet="Czesci" />
@@ -521,6 +515,16 @@ warning 6002: The table/view 'C:\USERS\IREK4\ONEDRIVE\DOCUMENTS\GITHUB\P_SERWISS
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="LogData">
+            <EntityTypeMapping TypeName="SerwisDBModel.LogData">
+              <MappingFragment StoreEntitySet="LogData">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="KlientID" ColumnName="KlientID" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Haslo" ColumnName="Haslo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Naprawy">
             <EntityTypeMapping TypeName="SerwisDBModel.Naprawy">
               <MappingFragment StoreEntitySet="Naprawy">
@@ -551,15 +555,6 @@ warning 6002: The table/view 'C:\USERS\IREK4\ONEDRIVE\DOCUMENTS\GITHUB\P_SERWISS
                 <ScalarProperty Name="NaprawaID" ColumnName="NaprawaID" />
                 <ScalarProperty Name="Od" ColumnName="Od" />
                 <ScalarProperty Name="Do" ColumnName="Do" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="LogData">
-            <EntityTypeMapping TypeName="SerwisDBModel.LogData">
-              <MappingFragment StoreEntitySet="LogData">
-                <ScalarProperty Name="KlientID" ColumnName="KlientID" />
-                <ScalarProperty Name="Login" ColumnName="Login" />
-                <ScalarProperty Name="Haslo" ColumnName="Haslo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

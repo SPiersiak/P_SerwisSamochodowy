@@ -18,7 +18,7 @@ namespace SerwisSamochodowy
         static int aktywnaPozycjaMenu = 0;
         public static void StartMenu(Logged a)
         {
-            Console.Title = "Witaj " + a.Imie + " " + a.Nazwisko;
+            Console.Title = "Serwis Samochodowy";
             Console.CursorVisible = false;
             while (true)
             {

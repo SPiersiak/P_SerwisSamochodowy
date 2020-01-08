@@ -96,9 +96,12 @@ namespace SerwisSamochodowy
                 }
                 sr.Close();
             }
-            catch (InvalidCastException e)
+            catch (Exception e)
             {
-                Console.WriteLine("Upps! Coś poszło nie tak. Spróbuj jeszcze raz lub skontaktuj sie z administratorem.\n{0}", e);
+                Console.WriteLine("Upps! Coś poszło nie tak. Spróbuj jeszcze raz lub skontaktuj sie z administratorem.");
+                //Czeka 1s
+                System.Threading.Thread.Sleep(1000);
+                return;
             }
             SerwisDBEntities3 db = new SerwisDBEntities3();
             Klient k = db.Klient.Single(a => a.KlientID == this.id);
@@ -175,7 +178,8 @@ namespace SerwisSamochodowy
                                   }).ToList();
                 try
                 {
-                    string path = "C:\\Users\\piers\\Desktop\\test2.csv";
+                    //string path = "C:\\Users\\piers\\Desktop\\test2.csv";
+                    string path = "C:\\Users\\irek4\\OneDrive\\Documents\\testowy\\test.csv";
                     StringBuilder sb = new StringBuilder();
                     sb.AppendLine("Wystawione przez Serwis Samochodowy Adam Niezbedny");
                     foreach (var x in zapytanie)
@@ -227,7 +231,8 @@ namespace SerwisSamochodowy
                                  }).ToList();
                 try
                 {
-                    string path = "C:\\Users\\piers\\Desktop\\test3.csv";
+                    //string path = "C:\\Users\\piers\\Desktop\\test3.csv";
+                    string path = "C:\\Users\\irek4\\OneDrive\\Documents\\testowy\\test.csv";
                     StringBuilder sb = new StringBuilder();
                     sb.AppendLine("Wystawione przez Serwis Samochodowy Adam Niezbedny");
                     foreach (var x in zapytanie)

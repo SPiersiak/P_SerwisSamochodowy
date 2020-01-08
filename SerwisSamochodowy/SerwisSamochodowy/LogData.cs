@@ -14,6 +14,7 @@ namespace SerwisSamochodowy
     
     public partial class LogData
     {
+        public int UserID { get; set; }
         public int KlientID { get; set; }
         public string Login { get; set; }
         public string Haslo { get; set; }

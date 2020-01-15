@@ -7,7 +7,7 @@ using System.IO;
 
 namespace SerwisSamochodowy
 {
-    class Logged
+    class Logged : ILogged
     {
         public int id { get; set; }
         public string Imie { get; private set; }
@@ -26,17 +26,42 @@ namespace SerwisSamochodowy
         //metoda zmieniająca hasło zalogowanego użytkownika
         public void ZmienHaslo()
         {
+            //pokazuje kursor aby ułatwić wpisywanie
+            Console.CursorVisible = true;
             Console.WriteLine("Podaj nowe hasło: ");
-            string haslo = Console.ReadLine();
-            SerwisDBEntities3 db = new SerwisDBEntities3();
-            LogData L = db.LogData.Single(a => a.KlientID == this.id);
-            L.Haslo = haslo;
-            db.SaveChanges();
+            //Wpisywane hasło bedzie niewidoczne, na ekranie nie pojawiają sie żadne znaki podczas wpisywania
+            string has = null;
+            while (true)
+            {
+                var key = System.Console.ReadKey(true);
+                if (key.Key == ConsoleKey.Enter)
+                    break;
+                has += key.KeyChar;
+            }
+            //ukrycie kursora
+            Console.CursorVisible = false;
+            try
+            {
+                SerwisDBEntities3 db = new SerwisDBEntities3();
+                LogData L = db.LogData.Single(a => a.KlientID == this.id);
+                L.Haslo = has;
+                db.SaveChanges();
+                Console.WriteLine("Pomyślnie zauktualizowano hasło." +
+                    "\nZa chwile nastapi powrót do menu");
+                System.Threading.Thread.Sleep(2000);
+                return;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Wystąpił Bład połaczenia z baza danych!");
+            }
         }
 
         //metoda pozwalajaca na ręczna aktualizacje danych zalogowanego uzytkownika
         public void RecznaAktualizacjaDanych()
         {
+            //pokazuje kursor aby ułatwić wpisywanie
+            Console.CursorVisible = true;
             Console.WriteLine("Podaj Nip:");
             string nip = Console.ReadLine();
 
@@ -48,15 +73,27 @@ namespace SerwisSamochodowy
 
             Console.WriteLine("Podaj kod pocztowy:");
             string kodPocztowy = Console.ReadLine();
+            //ukrycie kursora
+            Console.CursorVisible = false;
+            try
+            {
+                SerwisDBEntities3 db = new SerwisDBEntities3();
 
-            SerwisDBEntities3 db = new SerwisDBEntities3();
-
-            Klient k = db.Klient.Single(a => a.KlientID == this.id);
-            k.Nip = nip;
-            k.Telefon = telefon;
-            k.Adres = adres;
-            k.KodPocztowy = kodPocztowy;
-            db.SaveChanges();
+                Klient k = db.Klient.Single(a => a.KlientID == this.id);
+                k.Nip = nip;
+                k.Telefon = telefon;
+                k.Adres = adres;
+                k.KodPocztowy = kodPocztowy;
+                db.SaveChanges();
+                Console.WriteLine("Pomyślnie zauktualizowano dane." +
+                    "\nZa chwile nastapi powrót do menu");
+                System.Threading.Thread.Sleep(2000);
+                return;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Nastąpił bład podczas zapisu co bazy danych!");
+            }
         }
 
         //import pliku csv z danymi klienta
@@ -80,17 +117,27 @@ namespace SerwisSamochodowy
             catch (Exception e)
             {
                 Console.WriteLine("Upps! Coś poszło nie tak. Spróbuj jeszcze raz lub skontaktuj sie z administratorem.");
-                //Czeka 1s
-                System.Threading.Thread.Sleep(1000);
+                System.Threading.Thread.Sleep(2000);
                 return;
             }
-            SerwisDBEntities3 db = new SerwisDBEntities3();
-            Klient k = db.Klient.Single(a => a.KlientID == this.id);
-            k.Nip = tablica[0];
-            k.Telefon = tablica[1];
-            k.Adres = tablica[2];
-            k.KodPocztowy = tablica[3];
-            db.SaveChanges();
+            try
+            {
+                SerwisDBEntities3 db = new SerwisDBEntities3();
+                Klient k = db.Klient.Single(a => a.KlientID == this.id);
+                k.Nip = tablica[0];
+                k.Telefon = tablica[1];
+                k.Adres = tablica[2];
+                k.KodPocztowy = tablica[3];
+                db.SaveChanges();
+                Console.WriteLine("Pomyślnie zauktualizowano dane." +
+                    "\nZa chwile nastapi powrót do menu");
+                System.Threading.Thread.Sleep(2000);
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Nastąpił bład podczas zapisu co bazy danych!");
+            }
+
         }
 
         //metoda wypisujaca na ekran informacje z zakończonymi naprawami zalogowanego użytkownika
@@ -116,13 +163,16 @@ namespace SerwisSamochodowy
                                   }).ToList();
                 foreach (var x in zapytanie)
                 {
+                    DateTime data_od = Convert.ToDateTime(x._od);
+                    DateTime data_do = Convert.ToDateTime(x._do);
+                    DateTime gwarancja = Convert.ToDateTime(x._gwarancja);
                     decimal koszt = Convert.ToDecimal(x._pln);
                     Console.WriteLine($"Numer identyfikacyjny Naprawy: {x._nrNaprawy}" +
                         $"\nMarka: {x._marka} Model: {x._model}," +
                         $"\nOpis: {x._opis}" +
-                        $"\nNaprawa Od: {x._od} DO: {x._do} " +
+                        $"\nNaprawa Od: {data_od.ToString("dd-MM-yyyy")} DO: {data_do.ToString("dd-MM-yyyy")} " +
                         $"\nKoszt: {Decimal.Round(koszt,2)}zł \n" +
-                        $"Gwarancja do: {x._gwarancja}" +
+                        $"Gwarancja do: {gwarancja.ToString("dd-MM-yyyy")}" +
                         $"\n-------------------------------------------------------------------------------------------------------------------");
                 }
             }
@@ -131,12 +181,14 @@ namespace SerwisSamochodowy
                 Console.WriteLine("Bład połaczenia z baza danych\n{0}", e);
 
             }
+            Console.ReadKey();
         }
 
         //metoda wypisujaca informacje dzieki którym przy eksportowaniu paragony/faktury uzytkownik mial podglad z jakich napraw moze wybierac
-        public int HistoriaNaprawDoParagonow()
+        //zwraca jako liste typu int z numerami dostepnych numerów napraw dla zalogowanego uzytkownika
+        public List<int> HistoriaNaprawDoParagonow()
         {
-            int ilosc = 0 ;
+            var mozliwosci = new List<int>();
             try
             {
                 SerwisDBEntities3 db = new SerwisDBEntities3();
@@ -158,26 +210,38 @@ namespace SerwisSamochodowy
                         $"\nKoszt: {Decimal.Round(koszt, 2)}zł \n" +
                         $"\n-------------------------------------------------------------------------------------------------------------------");
                     int i = Convert.ToInt32(x._nrNaprawy);
-                    if (i > ilosc)
-                        ilosc = i;
-                }               
+                    mozliwosci.Add(i);
+                }
             }
             catch (Exception e)
             {
                 Console.WriteLine("Bład połaczenia z baza danych\n{0}", e);
             }
-            return ilosc;
+            return mozliwosci;
         }
 
         //metoda pozwalajaca na eksport do pliku faktury
         public void WystawFakture()
         {
-            int i = HistoriaNaprawDoParagonow();
+            //lista da której beda wpisane numery napraw z których bedzie mozna pobrac dane
+            var i = new List<int>();
+            i = HistoriaNaprawDoParagonow();
             Console.WriteLine("Podaj Numer Identyfikacyjny Naprawy z której chcesz otrzymac fakture");
             string wpisane = Console.ReadLine();
             int wybrane;
+            //sprawdzenie co zostało wpisane przez uzytkownika, jezeli liczba to true i wpisanie tej liczby do zmiennej wybrane, jezeli cos innego niz liczba false
             bool success = Int32.TryParse(wpisane,out wybrane);
-            if (success == true && wybrane <= i)
+            //sprawdzenie czy podana liczba przez uzytkownika znajduje sie w liscie z dostepnymi numermi napraw z których uzytkownik moze pobrac dane
+            bool exist = false;
+            foreach (var item in i)
+            {
+                if(item == wybrane)
+                {
+                    exist = true;
+                    break;
+                }
+            }
+            if (success == true && exist == true)
             {
                 try
                 {
@@ -202,14 +266,15 @@ namespace SerwisSamochodowy
                                      }).ToList();
                     try
                     {
-                        string path = "..\\test.csv";
+                        string path = "..\\Faktura.csv";
                         StringBuilder sb = new StringBuilder();
                         sb.AppendLine("Wystawione przez Serwis Samochodowy Adam Niezbedny");
                         foreach (var x in zapytanie)
                         {
+                            DateTime dataWystawienia = Convert.ToDateTime(x._dataWystwienia);
                             decimal koszt = Convert.ToDecimal(x._koszt);
                             sb.AppendLine($"Nr Faktury: { x._nrFaktury}");
-                            sb.AppendLine($"Data wystawienia: {x._dataWystwienia}");
+                            sb.AppendLine($"Data wystawienia: {dataWystawienia.ToString("dd-MM-yyyy")}");
                             sb.AppendLine($"Imie: {x._imie} Nazwisko: {x._nazwisko}");
                             sb.AppendLine($"Nip: {x._nip}");
                             sb.AppendLine($"Adres: {x._adres} {x._kodPocztowy}");
@@ -218,32 +283,40 @@ namespace SerwisSamochodowy
                             sb.AppendLine($"Opis: {x._opis}");
                         }
                         File.WriteAllText(path, sb.ToString());
-                        Console.WriteLine("Pomyślnie pobrano plik!");
+                        Console.WriteLine("Pomyślnie pobrano plik!" +
+                            "\nZa chwile nastapi powrót do menu");
+                        System.Threading.Thread.Sleep(2000);
+                        return;
                     }
                     catch (SystemException e)
                     {
                         Console.WriteLine("Upps! Coś poszło nie tak. Spróbuj jeszcze raz lub skontaktuj sie z administratorem.");
+                        System.Threading.Thread.Sleep(2000);
+                        return;
                     }
                 }
                 catch (SystemException e)
                 {
                     Console.WriteLine("Bład połaczenia z baza danych \n{0}", e);
+                    System.Threading.Thread.Sleep(2000);
+                    return;
 
                 }
-                Console.ReadKey();
             }
-            else if(wybrane > i)
+            else if(exist == false && success == true)
             {
                 Console.Clear();
-                Console.WriteLine("Nie ma takiego numeru identyfikacyjnego jak {0}",wybrane);
-                System.Threading.Thread.Sleep(3000);
+                Console.WriteLine("Nie ma takiego numeru identyfikacyjnego jak {0}" +
+                    "\nZa chwile nastapi powrót do menu", wybrane);
+                System.Threading.Thread.Sleep(2000);
                 return;
             }
             else
             {
                 Console.Clear();
-                Console.WriteLine("Wprowadzony znak nie jest liczba!");
-                System.Threading.Thread.Sleep(3000);
+                Console.WriteLine("Wprowadzony znak nie jest liczba!" +
+                    "\nZa chwile nastapi powrót do menu");
+                System.Threading.Thread.Sleep(2000);
                 return;
             }
         }
@@ -251,12 +324,25 @@ namespace SerwisSamochodowy
         //metoda pozwalajaca na eksport do pliku faktury
         public void WystawParagon()
         {
-            int i = HistoriaNaprawDoParagonow();
+            //lista da której beda wpisane numery napraw z których bedzie mozna pobrac dane
+            var i = new List<int>();
+            i = HistoriaNaprawDoParagonow();
             Console.WriteLine("Podaj Numer Identyfikacyjny Naprawy z której chcesz otrzymac paragon");
             string wpisane = Console.ReadLine();
             int wybrane;
+            //sprawdzenie co zostało wpisane przez uzytkownika, jezeli liczba to true i wpisanie tej liczby do zmiennej wybrane, jezeli cos innego niz liczba false
             bool success = Int32.TryParse(wpisane, out wybrane);
-            if (success == true && wybrane <= i)
+            //sprawdzenie czy podana liczba przez uzytkownika znajduje sie w liscie z dostepnymi numermi napraw z których uzytkownik moze pobrac dane
+            bool exist = false;
+            foreach (var item in i)
+            {
+                if (item == wybrane)
+                {
+                    exist = true;
+                    break;
+                }
+            }
+            if (success == true && exist == true)
             {
                 try
                 {
@@ -275,24 +361,27 @@ namespace SerwisSamochodowy
                                      }).ToList();
                     try
                     {
-                        string path = "..\\test.csv";
+                        string path = "..\\Paragon.csv";
                         StringBuilder sb = new StringBuilder();
                         sb.AppendLine("Wystawione przez Serwis Samochodowy Adam Niezbedny");
                         foreach (var x in zapytanie)
                         {
+                            DateTime dataWystawienia = Convert.ToDateTime(x._dataWystwienia);
                             decimal koszt = Convert.ToDecimal(x._koszt);
                             sb.AppendLine($"Numer paragou: {x._nrFaktury}");
-                            sb.AppendLine($"Data wystawienia: {x._dataWystwienia}");
+                            sb.AppendLine($"Data wystawienia: {dataWystawienia.ToString("dd-MM-yyyy")}");
                             sb.AppendLine($"Opis: {x._opis}");
                             sb.AppendLine($"Koszt: {Decimal.Round(koszt, 2)}zł");
                         }
                         File.WriteAllText(path, sb.ToString());
-                        Console.WriteLine("Pomyślnie pobrano plik!");
+                        Console.WriteLine("Pomyślnie pobrano plik!" +
+                            "\nZa chwile nastapi powrót do menu");
+                        System.Threading.Thread.Sleep(3000);
+                        return;
                     }
                     catch (SystemException e)
                     {
                         Console.WriteLine("Upps! Coś poszło nie tak. Spróbuj jeszcze raz lub skontaktuj sie z administratorem.");
-                        //Czeka 1s
                         System.Threading.Thread.Sleep(2000);
                         return;
                     }
@@ -300,24 +389,27 @@ namespace SerwisSamochodowy
                 catch (SystemException e)
                 {
                     Console.WriteLine("Bład połaczenia z baza danych\n{0}", e);
+                    System.Threading.Thread.Sleep(2000);
+                    return;
 
                 }
-                Console.ReadKey();
             }
-            else if (wybrane > i)
+            else if (exist == false && success == true)
             {
                 Console.Clear();
-                Console.WriteLine("Nie ma takiego numeru identyfikacyjnego jak {0}", wybrane);
-                System.Threading.Thread.Sleep(3000);
+                Console.WriteLine("Nie ma takiego numeru identyfikacyjnego jak {0}" +
+                    "\nZa chwile nastapi powrót do menu", wybrane);
+                System.Threading.Thread.Sleep(2000);
                 return;
             }
             else
             {
                 Console.Clear();
-                Console.WriteLine("Wprowadzony znak nie jest liczba!");
-                System.Threading.Thread.Sleep(3000);
+                Console.WriteLine("Wprowadzony znak nie jest liczba!" +
+                    "\nZa chwile nastapi powrót do menu");
+                System.Threading.Thread.Sleep(2000);
                 return;
-            }      
+            }
         }
 
         //metoda wypisujaca na ekran Naprawy które sa w trakcie
@@ -337,15 +429,21 @@ namespace SerwisSamochodowy
                                      _opis = n.OpisUwagi,
                                      _od = cn.Od
                                  }).ToList();
+                //Jeżli w wyniku zapytania nic nie zostało wpisane do listy wyswietlenie odpowiedniego komunikatu
                 if (zapytanie.Count == 0)
+                {
                     Console.WriteLine("Nie ma aktualnie wykonywanych napraw!");
+                    System.Threading.Thread.Sleep(2000);
+                    return;
+                }
                 else
                 {
                     foreach (var x in zapytanie)
                     {
+                        DateTime data_od = Convert.ToDateTime(x._od);
                         Console.WriteLine($"Nr Naprawy: {x._nrNaprawy}" +
                             $"\nOpis: {x._opis}" +
-                            $"\nTrwa od: {x._od} W Trakcie" +
+                            $"\nTrwa od: {data_od.ToString("dd-MM-yyyy")} W Trakcie" +
                             $"\n-------------------------------------------------------------------------------------------------------------------");
                     }
                 }
@@ -353,6 +451,8 @@ namespace SerwisSamochodowy
             catch (SystemException e)
             {
                 Console.WriteLine("Bład połaczenia z baza danych\n{0}", e);
+                System.Threading.Thread.Sleep(3000);
+                return;
             }
             Console.ReadKey();
         }

@@ -10,7 +10,7 @@ namespace SerwisSamochodowy
     {
         //tablica z nazwami które beda uzyte jako nazwy menu
         static string[] pozycjaMenu = {"Ręczna aktualizacja danych osobowych",
-                                        "Aktualizacja danych osobowych za pomoca importu z pliu txt"};
+                                        "Aktualizacja danych osobowych za pomoca importu z pliku CSV"};
 
         static int aktywnaPozycjaMenu = 0;
 
@@ -83,7 +83,8 @@ namespace SerwisSamochodowy
                 case 0:
                     Console.Clear(); a.RecznaAktualizacjaDanych(); break;
                 case 1:
-                    Console.Clear(); Console.WriteLine("Dane maja byc wpisane w jednej lini rozdzielone przecinkami,\n" +
+                    Console.Clear(); 
+                    Console.WriteLine("Dane maja byc wpisane w jednej lini rozdzielone przecinkami,\n" +
                         "podajac sciezke pamietaj ze musisz wpisac podwójne \\!");
                     Console.WriteLine("Podaj scieżke do pliku:");
                     //pokazuje kursor aby ułatwić wpisywanie

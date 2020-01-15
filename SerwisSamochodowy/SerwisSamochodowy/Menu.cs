@@ -9,7 +9,7 @@ namespace SerwisSamochodowy
     static class Menu
     {
         //tablica z nazwami które beda uzyte jako nazwy menu
-        static string[] pozycjaMenu = {"Wyświetlenie danych klienta",
+        static string[] pozycjaMenu = {"Wyświetlenie danych",
                                         "Historia napraw",
                                         "Status bieżacych napraw",
                                         "Faktury/Paragony",
@@ -93,7 +93,7 @@ namespace SerwisSamochodowy
                 case 0:
                     Console.Clear(); a.WypiszDane(); break;
                 case 1:
-                    Console.Clear(); a.HistoriaNapraw(); Console.ReadKey(); break;
+                    Console.Clear(); a.HistoriaNapraw(); break;
                 case 2:
                     Console.Clear(); a.StatusNapraw(); break;
                 case 3:
@@ -104,7 +104,8 @@ namespace SerwisSamochodowy
                     Console.Clear(); a.ZmienHaslo(); break;
                 case 6:
                     System.Windows.Forms.Application.Restart();
-                    Environment.Exit(0); break;
+                    Environment.Exit(0); 
+                    break;
             }
         }
     }

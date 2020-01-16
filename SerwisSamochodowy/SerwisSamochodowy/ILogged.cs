@@ -10,6 +10,7 @@ namespace SerwisSamochodowy
     {
         void WypiszDane();
         void ZmienHaslo();
+        string Password();
         void RecznaAktualizacjaDanych();
         void ImportAktualizacjaDanych(string link);
         void HistoriaNapraw();

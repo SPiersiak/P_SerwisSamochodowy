@@ -22,15 +22,9 @@ namespace SerwisSamochodowy
             Console.WriteLine("Podaj login:");
             string log = Console.ReadLine();
             Console.WriteLine("Podaj hasło:");
-            //Wpisywane hasło bedzie niewidoczne, na ekranie nie pojawiają sie żadne znaki podczas wpisywania
+            //Wpisywane hasło bedzie niewidoczne, na ekranie pojawiają sie '*' podczas wpisywania
             string has = null;
-            while (true)
-            {
-                var key = System.Console.ReadKey(true);
-                if (key.Key == ConsoleKey.Enter)
-                    break;
-                has += key.KeyChar;
-            }
+            has = Password();
 
             try
             {
@@ -50,6 +44,44 @@ namespace SerwisSamochodowy
             }
             return true;
         }
+
+        public static string Password()
+        {
+            StringBuilder input = new StringBuilder();
+            while (true)
+            {
+                int x = Console.CursorLeft;
+                int y = Console.CursorTop;
+                ConsoleKeyInfo key = Console.ReadKey(true);
+                //Jesli zostanie wcisniety Enter to konczy wpisywanie
+                if (key.Key == ConsoleKey.Enter)
+                {
+                    Console.WriteLine();
+                    break;
+                }
+                if (key.Key == ConsoleKey.Backspace && input.Length > 0)
+                {
+                    //usuwa wpisana literke ze stringbuilder
+                    input.Remove(input.Length - 1, 1);
+                    //przesuwa kursor  w lewo
+                    Console.SetCursorPosition(x - 1, y);
+                    //spacje zamiast gwiazdek wyglada jak puste pole
+                    Console.Write(" ");
+                    Console.SetCursorPosition(x - 1, y);
+                }
+                else if (key.Key != ConsoleKey.Backspace)
+                {
+                    //jesli wcisnieto cos innego niz backspace to wpisuje ten znak do buildera
+                    input.Append(key.KeyChar);
+                    //po czym wypisuje * w konsoli
+                    Console.Write("*");
+                }      
+            }
+            //zwraca haslo
+            return input.ToString();
+        }
+
+
 
         static void Main(string[] args)
         {

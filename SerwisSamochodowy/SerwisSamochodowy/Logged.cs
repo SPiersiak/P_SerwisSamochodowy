@@ -30,7 +30,7 @@ namespace SerwisSamochodowy
             //pokazuje kursor aby ułatwić wpisywanie
             Console.CursorVisible = true;
             Console.WriteLine("Podaj nowe hasło: ");
-            //Wpisywane hasło bedzie niewidoczne, na ekranie nie pojawiają sie żadne znaki podczas wpisywania
+            //Wpisywane zanki hasła beda zmieniane na *
             string has = null;
             has = Password();
 
@@ -251,6 +251,19 @@ namespace SerwisSamochodowy
             return mozliwosci;
         }
 
+        //metoda zwracajaca date w której był wystawiony paragon/faktura
+        //przyjmuje jako parametr liczbe ktora reprezentuje NapraweID w DB
+        //zwraca date z okreslona maską wyświetlania
+        private string DataWystawienia(int a)
+        {
+
+                SerwisDBEntities3 db = new SerwisDBEntities3();
+                var zapytanie = db.Faktury.Single(s => s.KlientID == this.id && s.NaprawaID == a);
+                DateTime Data = Convert.ToDateTime(zapytanie.DataWystawienia);
+                string DataZwracana = Data.ToString("dd.MM.yyyy");
+                return DataZwracana;
+        }
+
         //metoda pozwalajaca na eksport do pliku faktury
         public void WystawFakture()
         {
@@ -297,7 +310,8 @@ namespace SerwisSamochodowy
                                      }).ToList();
                     try
                     {
-                        string path = "..\\Faktura"+DateTime.Now.ToString("dd.MM.yyyy")+ ".csv";
+                        string Data = DataWystawienia(wybrane);
+                        string path = "..\\Faktura"+ Data + ".csv";
                         StringBuilder sb = new StringBuilder();
                         sb.AppendLine("Wystawione przez Serwis Samochodowy Adam Niezbedny");
                         foreach (var x in zapytanie)
@@ -392,14 +406,15 @@ namespace SerwisSamochodowy
                                      }).ToList();
                     try
                     {
-                        string path = "..\\Paragon"+ DateTime.Now.ToString("dd.MM.yyyy") +".csv";
+                        string Data = DataWystawienia(wybrane);
+                        string path = "..\\Paragon"+ Data +".csv";
                         StringBuilder sb = new StringBuilder();
                         sb.AppendLine("Wystawione przez Serwis Samochodowy Adam Niezbedny");
                         foreach (var x in zapytanie)
                         {
                             DateTime dataWystawienia = Convert.ToDateTime(x._dataWystwienia);
                             decimal koszt = Convert.ToDecimal(x._koszt);
-                            sb.AppendLine($"Numer paragou:; {x._nrFaktury}");
+                            sb.AppendLine($"Numer paragonu:; {x._nrFaktury}");
                             sb.AppendLine($"Data wystawienia:; {dataWystawienia.ToString("dd-MM-yyyy")}");
                             sb.AppendLine($"Opis:; {x._opis}");
                             sb.AppendLine($"Koszt:; {Decimal.Round(koszt, 2)}zł");

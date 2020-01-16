@@ -297,23 +297,23 @@ namespace SerwisSamochodowy
                                      }).ToList();
                     try
                     {
-                        string path = "..\\Faktura.csv";
+                        string path = "..\\Faktura"+DateTime.Now.ToString("dd.MM.yyyy")+ ".csv";
                         StringBuilder sb = new StringBuilder();
                         sb.AppendLine("Wystawione przez Serwis Samochodowy Adam Niezbedny");
                         foreach (var x in zapytanie)
                         {
                             DateTime dataWystawienia = Convert.ToDateTime(x._dataWystwienia);
                             decimal koszt = Convert.ToDecimal(x._koszt);
-                            sb.AppendLine($"Nr Faktury: { x._nrFaktury}");
-                            sb.AppendLine($"Data wystawienia: {dataWystawienia.ToString("dd-MM-yyyy")}");
-                            sb.AppendLine($"Imie: {x._imie} Nazwisko: {x._nazwisko}");
-                            sb.AppendLine($"Nip: {x._nip}");
-                            sb.AppendLine($"Adres: {x._adres} {x._kodPocztowy}");
-                            sb.AppendLine($"Telefon: {x._telefon}");
-                            sb.AppendLine($"Koszt: {Decimal.Round(koszt, 2)}zł");
-                            sb.AppendLine($"Opis: {x._opis}");
+                            sb.AppendLine($"Nr Faktury:; {x._nrFaktury}");
+                            sb.AppendLine($"Data wystawienia:; {dataWystawienia.ToString("dd-MM-yyyy")}");
+                            sb.AppendLine($"Imie i Nazwisko:; {x._nazwisko} {x._imie}");
+                            sb.AppendLine($"Nip:; {x._nip}");
+                            sb.AppendLine($"Adres:; {x._adres} {x._kodPocztowy}");
+                            sb.AppendLine($"Telefon:; {x._telefon}");
+                            sb.AppendLine($"Koszt; {Decimal.Round(koszt, 2)}zł");
+                            sb.AppendLine($"Opis:; {x._opis}");
                         }
-                        File.WriteAllText(path, sb.ToString());
+                        File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
                         Console.WriteLine("Pomyślnie pobrano plik!" +
                             "\nZa chwile nastapi powrót do menu");
                         System.Threading.Thread.Sleep(2000);
@@ -392,19 +392,19 @@ namespace SerwisSamochodowy
                                      }).ToList();
                     try
                     {
-                        string path = "..\\Paragon.csv";
+                        string path = "..\\Paragon"+ DateTime.Now.ToString("dd.MM.yyyy") +".csv";
                         StringBuilder sb = new StringBuilder();
                         sb.AppendLine("Wystawione przez Serwis Samochodowy Adam Niezbedny");
                         foreach (var x in zapytanie)
                         {
                             DateTime dataWystawienia = Convert.ToDateTime(x._dataWystwienia);
                             decimal koszt = Convert.ToDecimal(x._koszt);
-                            sb.AppendLine($"Numer paragou: {x._nrFaktury}");
-                            sb.AppendLine($"Data wystawienia: {dataWystawienia.ToString("dd-MM-yyyy")}");
-                            sb.AppendLine($"Opis: {x._opis}");
-                            sb.AppendLine($"Koszt: {Decimal.Round(koszt, 2)}zł");
+                            sb.AppendLine($"Numer paragou:; {x._nrFaktury}");
+                            sb.AppendLine($"Data wystawienia:; {dataWystawienia.ToString("dd-MM-yyyy")}");
+                            sb.AppendLine($"Opis:; {x._opis}");
+                            sb.AppendLine($"Koszt:; {Decimal.Round(koszt, 2)}zł");
                         }
-                        File.WriteAllText(path, sb.ToString());
+                        File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
                         Console.WriteLine("Pomyślnie pobrano plik!" +
                             "\nZa chwile nastapi powrót do menu");
                         System.Threading.Thread.Sleep(3000);
